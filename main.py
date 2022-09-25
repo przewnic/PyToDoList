@@ -12,7 +12,7 @@ def create_session():
 
 
 def menu():
-  """ Returns menu list """
+    """ Returns menu list """
     menu_list = [
         "Today's tasks",
         "Week's tasks",
@@ -26,7 +26,7 @@ def menu():
 
 
 def delete_task(session):
-  """ Display all task and ask user for number of task to delete """
+    """ Display all task and ask user for number of task to delete """
     rows = get_all_tasks(session)
     try:
         index_to_delete = int(input())
@@ -42,7 +42,7 @@ def delete_task(session):
 
 
 def missed_tasks(session):
-  """ Displays all missed task in order by the deadline date """
+    """ Displays all missed task in order by the deadline date """
     rows = session.query(Task).filter(Task.deadline < datetime.today().date()).all()
     if rows:
         rows.sort(key=lambda row: row.deadline)
@@ -52,12 +52,12 @@ def missed_tasks(session):
 
 
 def add_task(session):
-  """ Add a new task to database. 
+    """ Add a new task to database. 
       Asks user for description and deadline date in format (YYYY-MM-DD)
-  """
+    """
     print("Enter a task")
     task_description = input()
-    print("Enter a deadline")
+    print("Enter a deadline (YYYY-MM-DD)")
     try:
         deadline_string = input()
         date_object = datetime.strptime(deadline_string, "%Y-%m-%d")
@@ -71,12 +71,12 @@ def add_task(session):
 
 
 def get_tasks_for(session, for_date):
-  """ Returns all tasks for specific deadline """
+    """ Returns all tasks for specific deadline """
     return session.query(Task).filter(Task.deadline == for_date).all()
 
 
 def print_tasks(rows, show_deadline=False):
-  """ Display tasks specified in rows """
+    """ Display tasks specified in rows """
     if rows:
         for i, row in enumerate(rows):
             line = f"{i + 1}. {row.task}"
@@ -88,14 +88,14 @@ def print_tasks(rows, show_deadline=False):
 
 
 def get_todays(session, for_date=datetime.today().date()):
-  """ Print all task with today's deadline """
+    """ Print all task with today's deadline """
     print(f"Today {for_date.strftime('%d %b')}")
     rows = get_tasks_for(session=session, for_date=for_date)
     print_tasks(rows)
 
 
 def get_week_tasks(session):
-  """ Display tasks for every day for the next seven days """
+    """ Display tasks for every day for the next seven days """
     for_date = datetime.today()
     for i in range(7):
         rows = get_tasks_for(session=session, for_date=for_date.date())
@@ -106,7 +106,7 @@ def get_week_tasks(session):
 
 
 def get_all_tasks(session):
-  """ Returns all the tasks ordered by deadline date """
+    """ Returns all the tasks ordered by deadline date """
     rows = session.query(Task).all()
     rows.sort(key=lambda row: row.deadline)
     print_tasks(rows, show_deadline=True)
@@ -114,7 +114,7 @@ def get_all_tasks(session):
 
 
 def main():
-  """ Main program loop. """
+    """ Main program loop. """
     while True:
         for i, item in enumerate(menu(), start=1):
             num = 0 if (item == "Exit") else i
@@ -146,7 +146,7 @@ def main():
 
 
 if __name__ == "__main__":
-  """ Create database with Task table """
+    """ Create database with Task table """
     Base = declarative_base()
 
     class Task(Base):
